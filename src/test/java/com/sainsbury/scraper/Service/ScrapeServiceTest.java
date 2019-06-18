@@ -35,7 +35,10 @@ public class ScrapeServiceTest {
     public static final String CHERRY_STRAWBERRY_600_URL = "https://jsainsburyplc.github.io/serverside-test/site/www.sainsburys.co.uk/shop/gb/groceries/berries-cherries-currants/sainsburys-british-cherry---strawberry-pack-600g.html";
     public static final String CHERRY_STRAWBERRY_600_DUMP_PATH = "src/test/resources/sainsbury-cherry-strawberry-600.html";
 
-    private static final String expectedJson = "{\"results\":[{\"title\":\"Sainsbury's Strawberries 400g\",\"kcal_per_100g\":33,\"unit_price\":1.75,\"description\":\"by Sainsbury's strawberries\"},{\"title\":\"Sainsbury's Raspberries, Taste the Difference 150g\",\"kcal_per_100g\":32,\"unit_price\":2.50,\"description\":\"Ttd raspberries\"},{\"title\":\"Sainsbury's Cherry Punnet 200g\",\"unit_price\":1.50,\"description\":\"Cherries\"},{\"title\":\"Sainsbury's Mixed Berry Twin Pack 200g\",\"unit_price\":2.75,\"description\":\"Mixed Berries\"},{\"title\":\"Sainsbury's British Cherry & Strawberry Pack 600g\",\"unit_price\":4.00,\"description\":\"British Cherry & Strawberry Mixed Pack\"}],\"total\":{\"gross\":12.50,\"vat\":2.08}}";
+    public static final String BLACKCURRANT_150_URL = "https://jsainsburyplc.github.io/serverside-test/site/www.sainsburys.co.uk/shop/gb/groceries/berries-cherries-currants/sainsburys-blackcurrants-150g.html";
+    public static final String BLACKCURRANT_150_DUMP_PATH = "src/test/resources/sainsbury-blackcurrant-150.html";
+
+    private static final String expectedJson = "{\"results\":[{\"title\":\"Sainsbury's Strawberries 400g\",\"kcal_per_100g\":33,\"unit_price\":1.75,\"description\":\"by Sainsbury's strawberries\"},{\"title\":\"Sainsbury's Blackcurrants 150g\",\"unit_price\":1.75,\"description\":\"Union Flag\"},{\"title\":\"Sainsbury's Raspberries, Taste the Difference 150g\",\"kcal_per_100g\":32,\"unit_price\":2.50,\"description\":\"Ttd raspberries\"},{\"title\":\"Sainsbury's Cherry Punnet 200g\",\"kcal_per_100g\":52,\"unit_price\":1.50,\"description\":\"Cherries\"},{\"title\":\"Sainsbury's Mixed Berry Twin Pack 200g\",\"unit_price\":2.75,\"description\":\"Mixed Berries\"},{\"title\":\"Sainsbury's British Cherry & Strawberry Pack 600g\",\"unit_price\":4.00,\"description\":\"British Cherry & Strawberry Mixed Pack\"}],\"total\":{\"gross\":14.25,\"vat\":2.38}}";
 
     private ScrapeService scrapeService;
 
@@ -50,7 +53,10 @@ public class ScrapeServiceTest {
     @Test
     public void getProducts() throws IOException {
         mockPages();
-        Assert.assertEquals(expectedJson, scrapeService.getProducts(BASE_PAGE_URL).toString());
+
+        String actual = scrapeService.getProducts(BASE_PAGE_URL).toString();
+
+        Assert.assertEquals(expectedJson, actual);
     }
 
     private void mockPages() throws IOException {
@@ -60,5 +66,6 @@ public class ScrapeServiceTest {
         Mockito.when(scraper.scrape(CHERRY_200_URL)).thenReturn(Jsoup.parse(new File(CHERRY_200_DUMP_PATH), CHARSET_UTF_8, CHERRY_200_URL));
         Mockito.when(scraper.scrape(MIXED_BERRY_200_URL)).thenReturn(Jsoup.parse(new File(MIXED_BERRY_200_DUMP_PATH), CHARSET_UTF_8, MIXED_BERRY_200_URL));
         Mockito.when(scraper.scrape(CHERRY_STRAWBERRY_600_URL)).thenReturn(Jsoup.parse(new File(CHERRY_STRAWBERRY_600_DUMP_PATH), CHARSET_UTF_8, CHERRY_STRAWBERRY_600_URL));
+        Mockito.when(scraper.scrape(BLACKCURRANT_150_URL)).thenReturn(Jsoup.parse(new File(BLACKCURRANT_150_DUMP_PATH), CHARSET_UTF_8, BLACKCURRANT_150_URL));
     }
 }

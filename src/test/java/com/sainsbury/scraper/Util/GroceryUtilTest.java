@@ -1,6 +1,8 @@
 package com.sainsbury.scraper.Util;
 
 import static com.sainsbury.scraper.Service.ScrapeServiceTest.BASE_PAGE_URL;
+import static com.sainsbury.scraper.Service.ScrapeServiceTest.BLACKCURRANT_150_DUMP_PATH;
+import static com.sainsbury.scraper.Service.ScrapeServiceTest.BLACKCURRANT_150_URL;
 import static com.sainsbury.scraper.Service.ScrapeServiceTest.CHARSET_UTF_8;
 import static com.sainsbury.scraper.Service.ScrapeServiceTest.CHERRY_200_DUMP_PATH;
 import static com.sainsbury.scraper.Service.ScrapeServiceTest.CHERRY_200_URL;
@@ -22,14 +24,13 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import org.jsoup.Jsoup;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class GroceryUtilTest {
 
     @Test
     public void testBasePageParsedCorrectly() throws IOException {
-        List<String> expected = Arrays.asList(STRAWBERRY_400_URL, RASPBERRY_150_URL, CHERRY_200_URL, MIXED_BERRY_200_URL, CHERRY_STRAWBERRY_600_URL);
+        List<String> expected = Arrays.asList(STRAWBERRY_400_URL, BLACKCURRANT_150_URL, RASPBERRY_150_URL, CHERRY_200_URL, MIXED_BERRY_200_URL, CHERRY_STRAWBERRY_600_URL);
 
         List<String> actual = GroceryUtil.parseSearchPage(Jsoup.parse(new File(REDUCED_BASE_PAGE_DUMP_PATH), CHARSET_UTF_8, BASE_PAGE_URL));
 
@@ -55,7 +56,6 @@ public class GroceryUtilTest {
         assertEquals(expected, actual);
     }
 
-    @Ignore
     @Test
     public void testCherriesParsedCorrectly() throws IOException {
         Product expected = new Product("Sainsbury's Cherry Punnet 200g", 52, new BigDecimal("1.50"), "Cherries");
@@ -79,6 +79,15 @@ public class GroceryUtilTest {
         Product expected = new Product("Sainsbury's British Cherry & Strawberry Pack 600g", null, new BigDecimal("4.00"), "British Cherry & Strawberry Mixed Pack");
 
         Product actual = GroceryUtil.parseGroceryPage(Jsoup.parse(new File(CHERRY_STRAWBERRY_600_DUMP_PATH), CHARSET_UTF_8, CHERRY_STRAWBERRY_600_URL));
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testBlackcurrantsParsedCorrectly() throws IOException {
+        Product expected = new Product("Sainsbury's Blackcurrants 150g", null, new BigDecimal("1.75"), "Union Flag");
+
+        Product actual = GroceryUtil.parseGroceryPage(Jsoup.parse(new File(BLACKCURRANT_150_DUMP_PATH), CHARSET_UTF_8, BLACKCURRANT_150_URL));
 
         assertEquals(expected, actual);
     }
